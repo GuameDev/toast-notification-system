@@ -1,19 +1,42 @@
 <div class="p-8 space-y-4">
   <h1 class="text-2xl font-bold">Toast Demo</h1>
 
-  <div class="flex items-center space-x-4">
-    <label for="type" class="font-semibold">Select Toast Type:</label>
+  <div class="flex flex-col gap-4 max-w-md">
+    <!-- Toast Type -->
+    <label class="flex flex-col">
+      <span class="font-semibold">Toast Type:</span>
+      <select class="border px-3 py-2 rounded" [formControl]="toastTypeControl">
+        <option *ngFor="let type of toastTypes" [value]="type">{{ type }}</option>
+      </select>
+    </label>
 
-    <select
-      id="type"
-      class="border border-gray-300 rounded px-3 py-2"
-      [formControl]="toastTypeControl"
-    >
-      <option *ngFor="let type of toastTypes" [value]="type">
-        {{ type }}
-      </option>
-    </select>
+    <!-- Toast Position -->
+    <label class="flex flex-col">
+      <span class="font-semibold">Toast Position:</span>
+      <select class="border px-3 py-2 rounded" [formControl]="toastPositionControl">
+        <option *ngFor="let position of toastPositions" [value]="position">{{ position }}</option>
+      </select>
+    </label>
 
+    <!-- Title -->
+    <label class="flex flex-col">
+      <span class="font-semibold">Title:</span>
+      <input type="text" class="border px-3 py-2 rounded" [formControl]="toastTitleControl" />
+    </label>
+
+    <!-- Message -->
+    <label class="flex flex-col">
+      <span class="font-semibold">Message:</span>
+      <input type="text" class="border px-3 py-2 rounded" [formControl]="toastMessageControl" />
+    </label>
+
+    <!-- Duration -->
+    <label class="flex flex-col">
+      <span class="font-semibold">Duration (seconds):</span>
+      <input type="number" min="1" class="border px-3 py-2 rounded" [formControl]="toastDurationControl" />
+    </label>
+
+    <!-- Show Button -->
     <button
       (click)="showToast()"
       class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded"

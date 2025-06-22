@@ -1,37 +1,36 @@
-import { Injectable, signal } from '@angular/core';
+import { Injectable, signal, computed } from '@angular/core';
 import { ToastMessage } from '../../models/toast-message.model';
 import { ToastType } from '../../models/toast-type.enum';
-import { BehaviorSubject } from 'rxjs';
 import { ToastPosition } from '../../models/toast-position.enum';
 
-@Injectable({
-  providedIn: 'root',
-})
+@Injectable({ providedIn: 'root' })
 export class ToastService {
-  toastState = new BehaviorSubject<ToastMessage>(new ToastMessage(false));
+  private _toastMessage = signal<ToastMessage | null>(null);
 
+  toastMessage = computed(() => this._toastMessage());
 
   public show(
     title: string,
     message: string,
-    duartionInSeconds: number,
+    durationInSeconds: number,
     toastType: ToastType,
     position: ToastPosition
   ): void {
-    if (duartionInSeconds <= 0) {
-      duartionInSeconds = 5;
+    if (durationInSeconds <= 0) {
+      durationInSeconds = 5;
     }
-    let toast = new ToastMessage(true);
-    toast.durationInSeconds = duartionInSeconds;
+
+    const toast = new ToastMessage(true);
+    toast.durationInSeconds = durationInSeconds;
     toast.title = title;
     toast.message = message;
     toast.type = toastType;
     toast.position = position;
 
-    this.toastState.next(toast);
-    setTimeout(() => {
-      this.toastState.next(new ToastMessage(false));
-    }, duartionInSeconds * 1000);
-  }
+    this._toastMessage.set(toast);
 
+    setTimeout(() => {
+      this._toastMessage.set({ ...toast, visible: false });
+    }, durationInSeconds * 1000);
+  }
 }

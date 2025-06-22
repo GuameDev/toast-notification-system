@@ -4,39 +4,27 @@ import { ToastService } from '../../services/toast-service/toast-service';
 import { ToastType } from '../../models/toast-type.enum';
 import { Subscription } from 'rxjs';
 import { ToastMessage } from '../../models/toast-message.model';
-import { LucideAngularModule, CheckCircle } from 'lucide-angular';
+import { MatIconModule } from '@angular/material/icon';
 
 @Component({
   standalone: true,
   selector: 'app-toast-component',
   imports: [
-     CommonModule,
-      LucideAngularModule.pick({ CheckCircle })],
+    CommonModule,
+    MatIconModule],
   templateUrl: './toast-component.html',
   styleUrl: './toast-component.css'
 })
-export class ToastComponent implements OnDestroy {
-
-  ngOnDestroy(): void {
-    this.toastSubscription.unsubscribe();
-  }
-
+export class ToastComponent {
   public toastService = inject(ToastService);
-  private toastSubscription: Subscription;
   public toastType = ToastType;
-  public toastMessage?: ToastMessage;
 
-  constructor() {
-    this.toastSubscription = this.toastService.toastState.subscribe((toastMessage) => {
-      this.toastMessage = toastMessage;
-    })
-  }
+  toastMessage = this.toastService.toastMessage;
 
   public close(): void {
-    if (!this.toastMessage)
-      return;
-
-    this.toastMessage.visible = false;
+    const current = this.toastMessage();
+    if (current) {
+      this.toastService['_toastMessage'].set({ ...current, visible: false });
+    }
   }
-
 }
