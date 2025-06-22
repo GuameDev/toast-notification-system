@@ -2,13 +2,14 @@
 <div
   class="fixed z-50 w-96 shadow-lg rounded-md p-4 bg-white border-l-4"
   [ngClass]="[
-       positionClasses,
-       toastMessage()?.type === toastType.Success ? 'border-green-500' : '',
-       toastMessage()?.type === toastType.Warning ? 'border-yellow-500' : '',
-       toastMessage()?.type === toastType.Error ? 'border-red-500' : '',
-       toastMessage()?.type === toastType.Info ? 'border-blue-500' : '',
-       toastMessage()?.type === toastType.None ? 'border-gray-400' : ''
-     ]"
+    positionClasses,
+    toastMessage()?.visible ? 'animate-fade-in' : 'animate-fade-out',
+    toastMessage()?.type === toastType.Success ? 'border-green-500' : '',
+    toastMessage()?.type === toastType.Warning ? 'border-yellow-500' : '',
+    toastMessage()?.type === toastType.Error ? 'border-red-500' : '',
+    toastMessage()?.type === toastType.Info ? 'border-blue-500' : '',
+    toastMessage()?.type === toastType.None ? 'border-gray-400' : ''
+  ]"
 >
   <div class="flex items-start justify-between">
     <!-- Icon + Message -->

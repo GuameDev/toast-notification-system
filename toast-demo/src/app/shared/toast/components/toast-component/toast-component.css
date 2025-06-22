@@ -1,14 +1,29 @@
-@keyframes slide-in-right {
-  from {
+@keyframes fadeInRight {
+  0% {
     opacity: 0;
-    transform: translateX(100%);
+    transform: translateX(30px);
   }
-  to {
+  100% {
     opacity: 1;
     transform: translateX(0);
   }
 }
 
-.animate-slide-in-right {
-  animation: slide-in-right 0.3s ease-out;
+@keyframes fadeOutRight {
+  0% {
+    opacity: 1;
+    transform: translateX(0);
+  }
+  100% {
+    opacity: 0;
+    transform: translateX(30px);
+  }
+}
+
+.animate-fade-in {
+  animation: fadeInRight 0.3s ease-out forwards;
+}
+
+.animate-fade-out {
+  animation: fadeOutRight 0.3s ease-in forwards;
 }
