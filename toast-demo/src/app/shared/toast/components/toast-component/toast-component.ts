@@ -1,12 +1,13 @@
 import { CommonModule } from '@angular/common';
-import { Component, effect, inject, signal, WritableSignal } from '@angular/core';
+import { Component, effect, Inject, inject, signal, WritableSignal } from '@angular/core';
 import { MatIconModule } from '@angular/material/icon';
 
 import { ToastService } from '../../services/toast-service/toast-service';
-import { ToastMessage } from '../../models/toast-message.model';
+import { Toast } from '../../models/toast.model';
 import { ToastType } from '../../models/toast-type.enum';
 import { ToastPosition } from '../../models/toast-position.enum';
 import { PROGRESS_INITIAL_PERCENT, PROGRESS_UPDATE_INTERVAL_MS, TOAST_TIMEOUT_MS_MULTIPLIER } from '../../constants/toast.constants';
+import { TOAST_TYPE_CONFIG } from '../../constants/toast-type.config';
 
 @Component({
   standalone: true,
@@ -19,9 +20,12 @@ export class ToastComponent {
   readonly toastService = inject(ToastService);
   readonly toastType = ToastType;
   readonly toasts = this.toastService.toasts;
-
+  
   progressMap = new Map<string, WritableSignal<number>>();
 
+  getTypeConfig(type: ToastType) {
+  return TOAST_TYPE_CONFIG[type];
+}
 
   getPositionClasses(position: ToastPosition): string {
     switch (position) {
@@ -44,7 +48,7 @@ export class ToastComponent {
     this.toastService.dismiss(id);
   }
   
-  getProgress(toast: ToastMessage): number {
+  getProgress(toast: Toast): number {
     if (!this.progressMap.has(toast.id)) {
       const progress = signal<number>(PROGRESS_INITIAL_PERCENT);
       this.progressMap.set(toast.id, progress);

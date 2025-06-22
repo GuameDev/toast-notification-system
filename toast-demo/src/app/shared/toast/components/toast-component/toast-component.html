@@ -1,39 +1,17 @@
 <div
   *ngFor="let toast of toasts()"
-  class="fixed z-50 w-96 shadow-lg rounded-md p-4 bg-white border-l-4"
+  class="fixed z-50 w-96 shadow-lg rounded-md p-5 bg-white border-l-4"
   [ngClass]="[
     getPositionClasses(toast.position),
     toast.visible ? 'animate-fade-in' : 'animate-fade-out',
-    toast.type === toastType.Success ? 'border-green-500' : '',
-    toast.type === toastType.Warning ? 'border-yellow-500' : '',
-    toast.type === toastType.Error ? 'border-red-500' : '',
-    toast.type === toastType.Info ? 'border-blue-500' : '',
-    toast.type === toastType.None ? 'border-gray-400' : ''
+    getTypeConfig(toast.type).borderColorClass
   ]"
 >
   <div class="flex items-start justify-between">
-    <div class="flex gap-3">
-      <mat-icon
-        [ngClass]="{
-          'text-green-500': toast.type === toastType.Success,
-          'text-yellow-500': toast.type === toastType.Warning,
-          'text-red-500': toast.type === toastType.Error,
-          'text-blue-500': toast.type === toastType.Info,
-          'text-gray-500': toast.type === toastType.None
-        }"
-        class="text-2xl"
-      >
-        {{
-          toast.type === toastType.Success
-            ? 'check_circle'
-            : toast.type === toastType.Warning
-            ? 'warning'
-            : toast.type === toastType.Error
-            ? 'error'
-            : toast.type === toastType.Info
-            ? 'info'
-            : 'notifications'
-        }}
+    <!-- Icon + Message -->
+    <div class="flex gap-4 mt-4">
+      <mat-icon [ngClass]="getTypeConfig(toast.type).iconColorClass" class="text-2xl">
+        {{ getTypeConfig(toast.type).icon }}
       </mat-icon>
 
       <div>
@@ -42,12 +20,14 @@
       </div>
     </div>
 
-    <button (click)="close(toast.id)" class="ml-4">
+    <!-- Close button -->
+    <button (click)="close(toast.id)" class="ml-5">
       <mat-icon class="text-gray-500 hover:text-gray-800">close</mat-icon>
     </button>
   </div>
 
-  <div class="w-full h-1 bg-gray-200 mt-4 rounded overflow-hidden">
+  <!-- Progress bar -->
+  <div class="w-full h-1 bg-gray-200 mt-5 rounded overflow-hidden">
     <div
       class="h-full bg-blue-500 transition-all duration-100"
       [style.width.%]="getProgress(toast)"

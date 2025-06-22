@@ -6,7 +6,7 @@ import {
   DEFAULT_TOAST_TITLE
 } from '../constants/toast.constants';
 
-export class ToastMessage {
+export class Toast {
   public id: string; 
   public visible: boolean;
   public title: string;
@@ -25,7 +25,7 @@ export class ToastMessage {
     position = ToastPosition.Center,
     type = ToastType.Info,
     startTime
-  }: Partial<ToastMessage> = {}) {
+  }: Partial<Toast> = {}) {
     this.id = id;
     this.visible = visible;
     this.title = title;
