@@ -4,11 +4,12 @@ import { ToastType } from '../../shared/toast/models/toast-type.enum';
 import { ToastPosition } from '../../shared/toast/models/toast-position.enum';
 import { FormControl, ReactiveFormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
+import { MatIconModule } from '@angular/material/icon';
 
 @Component({
   selector: 'app-home-page',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule],
+  imports: [CommonModule, ReactiveFormsModule,MatIconModule],
   templateUrl: './home-page.html',
   styleUrl: './home-page.css',
 })

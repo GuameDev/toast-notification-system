@@ -1,47 +1,91 @@
-<div class="p-8 space-y-4">
-  <h1 class="text-2xl font-bold">Toast Demo</h1>
+<div
+  class="min-h-screen bg-gradient-to-br from-slate-100 to-white p-10 flex justify-center items-start"
+>
+  <div
+    class="w-full max-w-xl bg-white rounded-2xl shadow-xl p-8 border border-slate-200"
+  >
+    <h1 class="text-3xl font-bold text-slate-800 mb-6 flex items-center gap-2">
+      <mat-icon class="text-blue-600 text-3xl">notifications</mat-icon>
+      Toast Playground
+    </h1>
 
-  <div class="flex flex-col gap-4 max-w-md">
-    <!-- Toast Type -->
-    <label class="flex flex-col">
-      <span class="font-semibold">Toast Type:</span>
-      <select class="border px-3 py-2 rounded" [formControl]="toastTypeControl">
-        <option *ngFor="let type of toastTypes" [value]="type">{{ type }}</option>
-      </select>
-    </label>
+    <div class="space-y-5">
+      <!-- Toast Type -->
+      <div>
+        <label class="block text-sm font-medium text-slate-700 mb-1"
+          >Toast Type</label
+        >
+        <select
+          class="w-full border border-slate-300 px-4 py-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+          [formControl]="toastTypeControl"
+        >
+          <option *ngFor="let type of toastTypes" [value]="type">
+            {{ type }}
+          </option>
+        </select>
+      </div>
 
-    <!-- Toast Position -->
-    <label class="flex flex-col">
-      <span class="font-semibold">Toast Position:</span>
-      <select class="border px-3 py-2 rounded" [formControl]="toastPositionControl">
-        <option *ngFor="let position of toastPositions" [value]="position">{{ position }}</option>
-      </select>
-    </label>
+      <!-- Position -->
+      <div>
+        <label class="block text-sm font-medium text-slate-700 mb-1"
+          >Toast Position</label
+        >
+        <select
+          class="w-full border border-slate-300 px-4 py-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+          [formControl]="toastPositionControl"
+        >
+          <option *ngFor="let position of toastPositions" [value]="position">
+            {{ position }}
+          </option>
+        </select>
+      </div>
 
-    <!-- Title -->
-    <label class="flex flex-col">
-      <span class="font-semibold">Title:</span>
-      <input type="text" class="border px-3 py-2 rounded" [formControl]="toastTitleControl" />
-    </label>
+      <!-- Title -->
+      <div>
+        <label class="block text-sm font-medium text-slate-700 mb-1"
+          >Title</label
+        >
+        <input
+          type="text"
+          class="w-full border border-slate-300 px-4 py-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+          [formControl]="toastTitleControl"
+        />
+      </div>
 
-    <!-- Message -->
-    <label class="flex flex-col">
-      <span class="font-semibold">Message:</span>
-      <input type="text" class="border px-3 py-2 rounded" [formControl]="toastMessageControl" />
-    </label>
+      <!-- Message -->
+      <div>
+        <label class="block text-sm font-medium text-slate-700 mb-1"
+          >Message</label
+        >
+        <input
+          type="text"
+          class="w-full border border-slate-300 px-4 py-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+          [formControl]="toastMessageControl"
+        />
+      </div>
 
-    <!-- Duration -->
-    <label class="flex flex-col">
-      <span class="font-semibold">Duration (seconds):</span>
-      <input type="number" min="1" class="border px-3 py-2 rounded" [formControl]="toastDurationControl" />
-    </label>
+      <!-- Duration -->
+      <div>
+        <label class="block text-sm font-medium text-slate-700 mb-1"
+          >Duration (seconds)</label
+        >
+        <input
+          type="number"
+          min="1"
+          class="w-full border border-slate-300 px-4 py-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+          [formControl]="toastDurationControl"
+        />
+      </div>
 
-    <!-- Show Button -->
-    <button
-      (click)="showToast()"
-      class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded"
-    >
-      Show Toast
-    </button>
+      <!-- Show Button -->
+      <div class="pt-4">
+        <button
+          (click)="showToast()"
+          class="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2.5 px-6 rounded-lg transition-all shadow"
+        >
+          Show Toast
+        </button>
+      </div>
+    </div>
   </div>
 </div>
