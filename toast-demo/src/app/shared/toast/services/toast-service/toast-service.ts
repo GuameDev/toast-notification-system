@@ -20,13 +20,15 @@ export class ToastService {
       durationInSeconds = 5;
     }
 
+    const now = Date.now();
     const toast = new ToastMessage(true);
     toast.durationInSeconds = durationInSeconds;
     toast.title = title;
     toast.message = message;
     toast.type = toastType;
     toast.position = position;
-
+    toast.startTime = now; 
+    
     this._toastMessage.set(toast);
 
     setTimeout(() => {

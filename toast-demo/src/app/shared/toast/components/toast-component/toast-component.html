@@ -1,45 +1,49 @@
 @if (toastMessage()?.visible) {
-  <div class="fixed top-4 right-4 z-50 w-96 shadow-lg rounded-md p-4 bg-white border-l-4"
-       [ngClass]="{
+<div
+  class="fixed top-4 right-4 z-50 w-96 shadow-lg rounded-md p-4 bg-white border-l-4"
+  [ngClass]="{
          'border-green-500': toastMessage()?.type === toastType.Success,
          'border-yellow-500': toastMessage()?.type === toastType.Warning,
          'border-red-500': toastMessage()?.type === toastType.Error,
          'border-blue-500': toastMessage()?.type === toastType.Info,
          'border-gray-400': toastMessage()?.type === toastType.None
-       }">
+       }"
+>
+  <div class="flex items-start justify-between">
+    <!-- Icon + Message -->
+    <div class="flex gap-3">
+      @switch (toastMessage()?.type) { @case (toastType.Success) {
+      <mat-icon class="text-green-500 text-2xl">check_circle</mat-icon>
+      } @case (toastType.Warning) {
+      <mat-icon class="text-yellow-500 text-2xl">warning</mat-icon>
+      } @case (toastType.Error) {
+      <mat-icon class="text-red-500 text-2xl">error</mat-icon>
+      } @case (toastType.Info) {
+      <mat-icon class="text-blue-500 text-2xl">info</mat-icon>
+      } @case (toastType.None) {
+      <mat-icon class="text-gray-500 text-2xl">notifications</mat-icon>
+      } }
 
-    <div class="flex items-start justify-between">
-      <!-- Icon + Message -->
-      <div class="flex gap-3">
-        @switch (toastMessage()?.type) {
-          @case (toastType.Success) {
-            <mat-icon class="text-green-500 text-2xl">check_circle</mat-icon>
-          }
-          @case (toastType.Warning) {
-            <mat-icon class="text-yellow-500 text-2xl">warning</mat-icon>
-          }
-          @case (toastType.Error) {
-            <mat-icon class="text-red-500 text-2xl">error</mat-icon>
-          }
-          @case (toastType.Info) {
-            <mat-icon class="text-blue-500 text-2xl">info</mat-icon>
-          }
-          @case (toastType.None) {
-            <mat-icon class="text-gray-500 text-2xl">notifications</mat-icon>
-          }
-        }
-
-        <div>
-          <div class="font-semibold text-gray-900">{{ toastMessage()?.title }}</div>
-          <div class="text-sm text-gray-700">{{ toastMessage()?.message }}</div>
+      <div>
+        <div class="font-semibold text-gray-900">
+          {{ toastMessage()?.title }}
         </div>
+        <div class="text-sm text-gray-700">{{ toastMessage()?.message }}</div>
       </div>
-
-      <!-- Close button -->
-      <button (click)="close()" class="ml-4">
-        <mat-icon class="text-gray-500 hover:text-gray-800">close</mat-icon>
-      </button>
     </div>
 
+    <!-- Close button -->
+    <button (click)="close()" class="ml-4">
+      <mat-icon class="text-gray-500 hover:text-gray-800">close</mat-icon>
+    </button>
   </div>
+  <!-- Progress bar -->
+  <div class="w-full h-1 bg-gray-200 mt-4 rounded overflow-hidden">
+    <div
+      class="h-full bg-blue-500 transition-all duration-100"
+      [style.width.%]="progress()"
+    ></div>
+  </div>
+</div>
+
 }

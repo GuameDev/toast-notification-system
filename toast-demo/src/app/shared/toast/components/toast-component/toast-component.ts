@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, computed, inject, OnDestroy } from '@angular/core';
+import { Component, computed, effect, inject, OnDestroy, signal } from '@angular/core';
 import { ToastService } from '../../services/toast-service/toast-service';
 import { ToastType } from '../../models/toast-type.enum';
 import { Subscription } from 'rxjs';
@@ -20,6 +20,24 @@ export class ToastComponent {
   public toastType = ToastType;
 
   toastMessage = this.toastService.toastMessage;
+  progress = signal(100);
+
+  constructor() {
+    effect(() => {
+      const toast = this.toastMessage();
+      if (!toast?.visible || !toast.startTime) return;
+
+      const durationMs = toast.durationInSeconds * 1000;
+      const interval = setInterval(() => {
+        const elapsed = Date.now() - toast.startTime!;
+        const pct = 100 - (elapsed / durationMs) * 100;
+        this.progress.set(Math.max(0, pct));
+        if (pct <= 0) clearInterval(interval);
+      }, 100);
+
+      return () => clearInterval(interval);
+    });
+  }
 
   public close(): void {
     const current = this.toastMessage();
