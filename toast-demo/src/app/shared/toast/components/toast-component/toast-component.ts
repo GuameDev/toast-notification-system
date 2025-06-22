@@ -1,68 +1,63 @@
 import { CommonModule } from '@angular/common';
-import { Component, computed, effect, inject, OnDestroy, signal } from '@angular/core';
-import { ToastService } from '../../services/toast-service/toast-service';
-import { ToastType } from '../../models/toast-type.enum';
-import { Subscription } from 'rxjs';
-import { ToastMessage } from '../../models/toast-message.model';
+import { Component, effect, inject, signal, WritableSignal } from '@angular/core';
 import { MatIconModule } from '@angular/material/icon';
+
+import { ToastService } from '../../services/toast-service/toast-service';
+import { ToastMessage } from '../../models/toast-message.model';
+import { ToastType } from '../../models/toast-type.enum';
+import { ToastPosition } from '../../models/toast-position.enum';
+import { TOAST_TIMEOUT_MS_MULTIPLIER } from '../../constants/toast.constants';
 
 @Component({
   standalone: true,
   selector: 'app-toast-component',
-  imports: [
-    CommonModule,
-    MatIconModule],
+  imports: [CommonModule, MatIconModule],
   templateUrl: './toast-component.html',
-  styleUrl: './toast-component.css'
+  styleUrl: './toast-component.css',
 })
 export class ToastComponent {
-  public toastService = inject(ToastService);
-  public toastType = ToastType;
+  readonly toastService = inject(ToastService);
+  readonly toastType = ToastType;
+  readonly toasts = this.toastService.toasts;
 
-  toastMessage = this.toastService.toastMessage;
-  progress = signal(100);
+  progressMap = new Map<string, WritableSignal<number>>();
 
-  constructor() {
-    effect(() => {
-      const toast = this.toastMessage();
-      if (!toast?.visible || !toast.startTime) return;
 
-      const durationMs = toast.durationInSeconds * 1000;
-      const interval = setInterval(() => {
-        const elapsed = Date.now() - toast.startTime!;
-        const pct = 100 - (elapsed / durationMs) * 100;
-        this.progress.set(Math.max(0, pct));
-        if (pct <= 0) clearInterval(interval);
-      }, 100);
-
-      return () => clearInterval(interval);
-    });
-  }
-
-  public close(): void {
-    const current = this.toastMessage();
-    if (current) {
-      this.toastService['_toastMessage'].set({ ...current, visible: false });
+  getPositionClasses(position: ToastPosition): string {
+    switch (position) {
+      case ToastPosition.TopLeft:
+        return 'top-4 left-4';
+      case ToastPosition.TopRight:
+        return 'top-4 right-4';
+      case ToastPosition.BottomLeft:
+        return 'bottom-4 left-4';
+      case ToastPosition.BottomRight:
+        return 'bottom-4 right-4';
+      case ToastPosition.Center:
+        return 'top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2';
+      default:
+        return 'top-4 right-4';
     }
   }
 
-  get positionClasses(): string {
-  const pos = this.toastMessage()?.position;
-
-  switch (pos) {
-    case 'position-top-left':
-      return 'top-4 left-4';
-    case 'position-top-right':
-      return 'top-4 right-4';
-    case 'position-bottom-left':
-      return 'bottom-4 left-4';
-    case 'position-bottom-right':
-      return 'bottom-4 right-4';
-    case 'position-center':
-      return 'top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2';
-    default:
-      return 'top-4 right-4';
+  close(id: string): void {
+    this.toastService.dismiss(id);
   }
-}
 
+  getProgress(toast: ToastMessage): number {
+    if (!this.progressMap.has(toast.id)) {
+      const progress = signal(100);
+      this.progressMap.set(toast.id, progress);
+
+      const interval = setInterval(() => {
+        const elapsed = Date.now() - (toast.startTime ?? 0);
+        const pct = 100 - (elapsed / (toast.durationInSeconds * TOAST_TIMEOUT_MS_MULTIPLIER)) * 100;
+        progress.set(Math.max(0, pct));
+        if (pct <= 0) clearInterval(interval);
+      }, 100);
+    }
+
+    return this.progressMap.get(toast.id)?.() ?? 0;
+
+  }
 }
