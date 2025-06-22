@@ -1,0 +1,15 @@
+@if (toastMessage?.visible) 
+{
+    <div class="toast"[ngClass]="toastMessage?.position" >
+        <div class="toast-grid">
+            <div>
+                @switch (toastMessage?.type) 
+                {
+                    @case (toastType.Success) {
+                        <img src="assets/images/toast-success.svg" width="78">
+                    }  
+                }
+            </div>
+        </div>
+    </div>
+}
