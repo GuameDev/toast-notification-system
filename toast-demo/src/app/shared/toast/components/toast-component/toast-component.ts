@@ -45,4 +45,24 @@ export class ToastComponent {
       this.toastService['_toastMessage'].set({ ...current, visible: false });
     }
   }
+
+  get positionClasses(): string {
+  const pos = this.toastMessage()?.position;
+
+  switch (pos) {
+    case 'position-top-left':
+      return 'top-4 left-4';
+    case 'position-top-right':
+      return 'top-4 right-4';
+    case 'position-bottom-left':
+      return 'bottom-4 left-4';
+    case 'position-bottom-right':
+      return 'bottom-4 right-4';
+    case 'position-center':
+      return 'top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2';
+    default:
+      return 'top-4 right-4';
+  }
+}
+
 }
