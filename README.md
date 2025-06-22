@@ -20,7 +20,7 @@ A clean, modern, and fully customizable **toast notification system** built in *
 
 ## 📸 Demo
 
-![Toast Demo UI Screenshot](docs/screenshot.png) <!-- Optional -->
+![Toast Demo UI Screenshot](docs/images/toast-notification-system-demo-01.jpg) 
 
 ---
 
